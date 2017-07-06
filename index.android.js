@@ -74,6 +74,11 @@ class RnCreditZZ extends Component {
         })
     }
 
+    _hideSplashScreen() {
+        this.timer && clearInterval(this.timer);
+        this.setState({showSplashScreen:false});
+    }
+
     // postMessage = () => {
     //     if (this.webview) {
     //         // this.webview.postMessage('window.postMessage("Title："+document.title);');
@@ -128,12 +133,12 @@ class RnCreditZZ extends Component {
         let showSplashScreen=this.state.showSplashScreen
         return (
             <View style={styles.container}>
-                <View style={[styles.muder, showSplashScreen ? null : {display:'none'} ]}>
+                <View style={[styles.muder, showSplashScreen ? null : {zIndex:-1} ]}>
                     <Image source={require('./src/assets/splashScreen.jpg')} style={{width: deviceWidth, height:deviceHeight}} />
                     <TouchableHighlight
                         style={styles.countDown}
                         underlayColor="#fff"
-                        onPress={() => {this.setState({showSplashScreen:false})}}
+                        onPress={this._hideSplashScreen.bind(this)}
                     >
                         <Text style={{color:'#304b65'}}>跳过 {this.state.countDown}</Text>
                     </TouchableHighlight>
@@ -167,9 +172,14 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     muder:{
+        position:'absolute',
+        left:0,
+        right:0,
+        top:0,
+        bottom:0,
+        zIndex:1
     },
     countDown:{
-        flex: 1,
         alignItems:'center',
         justifyContent: 'center',
         position:'absolute',
@@ -180,7 +190,7 @@ const styles = StyleSheet.create({
         borderRadius: 25,
         borderWidth: (Platform.OS==='ios' ? 1.0 : 1.5) / PixelRatio.get(),
         borderColor: '#304b65',
-        backgroundColor:'#fbfdfe',
+        backgroundColor:'#fbfdfe'
     },
     webview:{
     }
